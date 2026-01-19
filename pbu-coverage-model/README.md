@@ -47,6 +47,7 @@ feature engineering, and modeling code is provided.
 ---
 
 ## Methods
+All data processing, feature engineering, and modeling code can be found in the [`src/`](./src) directory.
 
 ### Feature Engineering
 
@@ -109,9 +110,8 @@ defender positioning and movement before the ball is released.
 pbu-pass-breakup-prediction/
 │
 ├── README.md
-├── data/ # Data dictionaries / derived features (no raw tracking data)
+├── data/ # Processed and modeling-ready datasets (raw tracking data not included)
 ├── src/ # Feature engineering and modeling scripts
-├── notebooks/ # Exploratory analysis and visualization
 └── figures/ # Plots and visual outputs
 ```
 ---
