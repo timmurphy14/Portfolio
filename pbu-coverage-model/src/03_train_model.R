@@ -1,13 +1,11 @@
-# src/03_train_models.R
+# src/03_train_model.R
 # Train baseline and tree-based models for PBU prediction
 
 source("src/00_load_packages.R")
 
 # Load modeling dataset
-model_temporal <- read_csv(
-  "data/model_temporal.csv",
-  show_col_types = FALSE
-)
+model_temporal <- read_csv("data/model_temporal.csv", show_col_types = FALSE) %>%
+  mutate(pbu = as.integer(pbu))
 
 # Train / test split (stratified by PBU)
 set.seed(123)
@@ -19,14 +17,13 @@ train_idx <- unlist(
          function(idx) sample(idx, length(idx) * 0.8))
 )
 
+# Save split for evaluation
+saveRDS(train_idx, "data/train_idx.rds")
+
 train_data <- model_temporal[train_idx, ]
 test_data  <- model_temporal[-train_idx, ]
 
-# Check class balance
-prop.table(table(train_data$pbu))
-prop.table(table(test_data$pbu))
-
-# Logistic regression (baseline, interpretable)
+# Logistic regression
 logit_formula <- pbu ~ . - game_id - play_id - def_nfl_id - week
 
 logit_model <- glm(
@@ -35,9 +32,7 @@ logit_model <- glm(
   family = binomial(link = "logit")
 )
 
-summary(logit_model)
-
-# XGBoost (nonlinear model)
+# XGBoost
 train_data$set <- "train"
 test_data$set  <- "test"
 
@@ -55,17 +50,17 @@ all_data_xgb <- all_data %>%
 
 X_all <- model.matrix(~ . - 1, data = all_data_xgb)
 
-train_idx <- which(all_data$set == "train")
-test_idx  <- which(all_data$set == "test")
+train_rows <- which(all_data$set == "train")
+test_rows  <- which(all_data$set == "test")
 
-train_x <- X_all[train_idx, ]
-test_x  <- X_all[test_idx, ]
+train_x <- X_all[train_rows, , drop = FALSE]
+test_x  <- X_all[test_rows,  , drop = FALSE]
 
-train_y <- as.numeric(train_data$pbu) - 1
-test_y  <- as.numeric(test_data$pbu) - 1
+train_y <- train_data$pbu
+test_y  <- test_data$pbu
 
-dtrain <- xgb.DMatrix(data = train_x, label = train_y)
-dtest  <- xgb.DMatrix(data = test_x,  label = test_y)
+dtrain <- xgb.DMatrix(train_x, label = train_y)
+dtest  <- xgb.DMatrix(test_x,  label = test_y)
 
 params <- list(
   objective = "binary:logistic",
@@ -87,6 +82,11 @@ xgb_model <- xgb.train(
   print_every_n = 50
 )
 
-# Save trained models for evaluation
+# Save models and matrix for evaluation
 saveRDS(logit_model, "data/logit_model.rds")
 saveRDS(xgb_model,   "data/xgb_model.rds")
+
+saveRDS(
+  list(X_all = X_all, train_rows = train_rows, test_rows = test_rows),
+  "data/xgb_matrix.rds"
+)
