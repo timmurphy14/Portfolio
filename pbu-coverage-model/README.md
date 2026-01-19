@@ -47,6 +47,7 @@ feature engineering, and modeling code is provided.
 ---
 
 ## Methods
+All data processing, feature engineering, and modeling code can be found in the [`src/`](./src) directory.
 
 ### Feature Engineering
 
