@@ -79,13 +79,16 @@ p_or <- ggplot(coef_plot, aes(term, OR)) +
     x = "Feature",
     y = "Odds Ratio (log scale)"
   ) +
-  theme_minimal() +
-  theme(
-    plot.background  = element_rect(fill = "white", color = NA),
-    panel.background = element_rect(fill = "white", color = NA)
-  )
+  theme_minimal() 
 
-ggsave("figures/logit_odds_ratios.png", p_or, width = 7, height = 5, dpi = 300)
+ggsave(
+  "figures/logit_odds_ratios.png", 
+  p_or, 
+  width = 7, 
+  height = 5, 
+  dpi = 300,
+  bg = "white"
+  )
 
 
 
@@ -117,7 +120,14 @@ p_roc <- ggplot() +
     y = "True Positive Rate"
   )
 
-ggsave("figures/roc_curves.png", p_roc, width = 7, height = 5)
+ggsave(
+  "figures/roc_curves.png", 
+  p_roc, 
+  width = 7, 
+  height = 5, 
+  dpi = 300,
+  bg = "white"
+)
 
 # Precision–Recall curves
 pr_df <- function(y, p) {
@@ -146,7 +156,14 @@ p_pr <- ggplot() +
     y = "Precision"
   )
 
-ggsave("figures/pr_curves.png", p_pr, width = 7, height = 5)
+ggsave(
+  "figures/pr_curves.png", 
+  p_pr, 
+  width = 7, 
+  height = 5, 
+  dpi = 300,
+  bg = "white"
+)
 
 # Feature importance
 imp <- xgb.importance(model = xgb_model)
@@ -166,7 +183,14 @@ p_imp <- ggplot(top20, aes(Feature, Gain)) +
     y = "Gain"
   )
 
-ggsave("figures/xgb_feature_importance.png", p_imp, width = 7, height = 6)
+ggsave(
+  "figures/xgb_feature_importance.png", 
+  p_imp, 
+  width = 7, 
+  height = 5, 
+  dpi = 300,
+  bg = "white"
+)
 
 # Save predictions
 preds_out <- test_data %>%
