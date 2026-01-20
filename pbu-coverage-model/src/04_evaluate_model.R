@@ -46,6 +46,7 @@ coef_df <- as.data.frame(coef(summary(logit_model)))
 coef_df$term <- rownames(coef_df) 
 rownames(coef_df) <- NULL 
 names(coef_df) <- c("Estimate", "StdError", "z", "p", "term") 
+
 coef_df <- coef_df %>% 
   mutate( OR = exp(Estimate), 
           OR_low = exp(Estimate - 1.96 * StdError), 
@@ -62,15 +63,31 @@ keep_terms <- c(
 coef_plot <- coef_df %>% 
   filter(term %in% keep_terms) %>% 
   mutate(term = factor(term, levels = rev(keep_terms))) 
-p_or <- ggplot(coef_plot, aes(term, OR)) + 
-  geom_point(size = 3) + 
-  geom_errorbar(aes(ymin = OR_low, ymax = OR_high), width = 0.2) + 
-  geom_hline(yintercept = 1, linetype = "dashed") + 
-  coord_flip() + 
-  labs( title = "Logistic Regression Odds Ratios", x = "Feature", y = "Odds Ratio" ) + 
-  theme_minimal() 
 
-ggsave("figures/logit_odds_ratios.png", p_or, width = 7, height = 5)
+p_or <- ggplot(coef_plot, aes(term, OR)) +
+  geom_point(size = 3, color = "#1f77b4") +
+  geom_errorbar(
+    aes(ymin = OR_low, ymax = OR_high),
+    width = 0.2,
+    color = "#1f77b4"
+  ) +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "gray50") +
+  scale_y_log10() +
+  coord_flip() +
+  labs(
+    title = "Logistic Regression Odds Ratios",
+    x = "Feature",
+    y = "Odds Ratio (log scale)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.background  = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA)
+  )
+
+ggsave("figures/logit_odds_ratios.png", p_or, width = 7, height = 5, dpi = 300)
+
+
 
 # ROC curves
 roc_df <- function(y, p) {
