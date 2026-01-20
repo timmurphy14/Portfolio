@@ -72,7 +72,7 @@ class imbalance considerations.
 
 Models explored included:
 - Logistic Regression (baseline and interpretability)
-- Tree-based models for capturing nonlinear relationships
+- Tree-based models for capturing nonlinear relationships (XGBoost)
 
 Model performance was evaluated using classification metrics appropriate for rare
 events, including ROC-AUC and precision-recall analysis.
