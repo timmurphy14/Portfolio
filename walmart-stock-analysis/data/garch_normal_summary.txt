@@ -1,0 +1,56 @@
+
+Title:
+ GARCH Modelling 
+
+Call:
+ garchFit(formula = ~arma(0, 1) + garch(1, 1), data = log.ret, 
+    trace = FALSE) 
+
+Mean and Variance Equation:
+ data ~ arma(0, 1) + garch(1, 1)
+<environment: 0xca3427850>
+ [data = log.ret]
+
+Conditional Distribution:
+ norm 
+
+Coefficient(s):
+         mu          ma1        omega       alpha1        beta1  
+ 0.00079797  -0.03841784   0.00002428   0.09073778   0.78613347  
+
+Std. Errors:
+ based on Hessian 
+
+Error Analysis:
+         Estimate  Std. Error  t value Pr(>|t|)    
+mu      7.980e-04   3.171e-04    2.516   0.0119 *  
+ma1    -3.842e-02   3.096e-02   -1.241   0.2146    
+omega   2.428e-05   5.899e-06    4.116 3.86e-05 ***
+alpha1  9.074e-02   1.823e-02    4.978 6.44e-07 ***
+beta1   7.861e-01   4.271e-02   18.405  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Log Likelihood:
+ 4315.923    normalized:  2.896593 
+
+Description:
+ Wed Jan 21 15:36:30 2026 by user:  
+
+
+Standardised Residuals Tests:
+                                   Statistic   p-Value
+ Jarque-Bera Test   R    Chi^2  1.111098e+04 0.0000000
+ Shapiro-Wilk Test  R    W      8.898066e-01 0.0000000
+ Ljung-Box Test     R    Q(10)  9.548467e+00 0.4809590
+ Ljung-Box Test     R    Q(15)  1.078638e+01 0.7675851
+ Ljung-Box Test     R    Q(20)  1.476701e+01 0.7895805
+ Ljung-Box Test     R^2  Q(10)  1.727666e+00 0.9980334
+ Ljung-Box Test     R^2  Q(15)  2.679852e+00 0.9998018
+ Ljung-Box Test     R^2  Q(20)  3.455893e+00 0.9999863
+ LM Arch Test       R    TR^2   1.862942e+00 0.9995889
+
+Information Criterion Statistics:
+      AIC       BIC       SIC      HQIC 
+-5.786474 -5.768667 -5.786496 -5.779838 
+
