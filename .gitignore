@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# RStudio
+.Rproj.user/
+.Rhistory
+.RData
+
+# Large raw data (local only)
+**/data/input_*.csv
+**/data/output_*.csv
+**/data/supplementary_data.csv
